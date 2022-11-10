@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>下雪啦</title>
+		<style type="text/css">
+		audio
+		{
+		   bottom: 0;
+		   right: 0;
+		   position:fixed;
+		}
+		</style>
+		<style type="text/css">
+			.xuehua{
+				position: absolute;
+				background: url(snow.png);
+				background-size: 100% 100%;
+				margin: auto;
+			}
+			#beijing{
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				background:url(雪景.jpg);
+			}
+			#huaban{
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
+		</style>
+		<script type="text/javascript">
+			
+			
+			var list = new Array();//用来装雪花的集合
+			
+			
+			window.onload = function() {
+				setInterval("run()", 10);
+				
+			
+			}
+			
+			
+			function newXue() { //创建一个雪花
+				var v = new Object();//创建一个对象
+				v.wh = Math.random() * 20 + 15;//wh代表雪花的宽高
+
+			
+				v.x = Math.random() * window.innerWidth;
+				v.y = -v.wh;
+				
+				
+				v.sdx = Math.random() + 0.3;//雪花的x轴移动速度
+				v.sdy = Math.random() + 1;//雪花的y轴移动速度
+				v.div = document.createElement("div");//创建一个div,每个雪花都有一个div,这个div是用来显示雪花的
+				v.div.className = "xuehua";//设置div的类
+				
+				//设置div的位置
+				v.div.style.width = v.wh + "px";
+				v.div.style.height = v.wh + "px";
+				document.getElementById("huaban").appendChild(v.div);//把这个div添加到画布（huaban）里
+				list.push(v);//把雪花添加到集合
+			}
+			
+		
+			var load = 0;
+			
+			function run() 
+			{
+				load++;//让load自增
+				if (load == 10)
+				{
+					newXue();
+					load = 0;
+				}
+				for (var i = 0; i < list.length; i++) 
+				{
+					var v = list[i];
+					//一些简单的坐标计算
+					v.x -= v.sdx;
+					v.y += v.sdy;
+					v.div.style.left = v.x + "px";
+					v.div.style.top = v.y + "px";
+					if (v.x + v.wh < 0 || v.y > window.innerHeight) 
+					{
+						list.splice(i, 1);//从list删除雪花
+						document.getElementById("huaban").removeChild(v.div);//删除div
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="beijing"></div>
+		<div id="huaban"></div>
+		<audio autoplay="autoplay" controls="controls"loop="loop" preload="auto"
+		            	src="音乐.mp3">
+		      		你的浏览器版本太低，不支持audio标签
+			</audio>
+	</body>
+</html>
+
